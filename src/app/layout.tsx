@@ -1,16 +1,13 @@
+
 import type { Metadata } from "next";
-import { Geist, Geist_Mono } from "next/font/google";
+import { ClerkProvider } from "@clerk/nextjs";
 import "./globals.css";
-
-const geistSans = Geist({
-  variable: "--font-geist-sans",
-  subsets: ["latin"],
-});
-
-const geistMono = Geist_Mono({
-  variable: "--font-geist-mono",
-  subsets: ["latin"],
-});
+import "@/styles/index.css";
+import { Toaster } from "@/components/ui/sonner";
+import { TRPCProvider } from "./trpc/client";
+import { HydrationBoundary } from "@tanstack/react-query";
+import { ErrorBoundary } from "react-error-boundary";
+import VideoCallModal from "@/components/utils/video-call-modal";
 
 export const metadata: Metadata = {
   title: "Create Next App",
@@ -22,13 +19,24 @@ export default function RootLayout({
 }: Readonly<{
   children: React.ReactNode;
 }>) {
+
   return (
-    <html lang="en">
-      <body
-        className={`${geistSans.variable} ${geistMono.variable} antialiased`}
-      >
-        {children}
-      </body>
-    </html>
+    <ClerkProvider afterSignOutUrl='/' >
+      <html lang="en">
+        <body
+        >
+          <TRPCProvider>
+            <HydrationBoundary>
+              <ErrorBoundary fallback={<div>Failed to load form</div>}>
+                <Toaster />
+                {children}
+                {/* // video call dialog  */}
+                {/* <VideoCallModal /> */}
+              </ErrorBoundary>
+            </HydrationBoundary>
+          </TRPCProvider>
+        </body>
+      </html>
+    </ClerkProvider>
   );
 }
