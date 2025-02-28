@@ -1,4 +1,5 @@
 "use client"
+import { Button } from "@/components/ui/button"
 import { cn } from "@/lib/utils"
 import { BentoCard, BentoGrid } from "@/modules/home/components/acernity/bento-grid"
 import { DotPattern } from "@/modules/home/components/acernity/dotpattern"
@@ -79,8 +80,8 @@ export default function Home() {
         <AnimatedGridPattern
           numSquares={80}
           maxOpacity={0.3}
-          duration={5}
-          repeatDelay={2}
+          duration={1}
+          repeatDelay={1}
           className={cn(
             "[mask-image:radial-gradient(500px_circle_at_center,white,transparent)]",
             "inset-x-0 inset-y-[-30%] h-[200%] skew-y-12",
@@ -98,12 +99,12 @@ export default function Home() {
           </p>
 
           <div className="flex flex-col sm:flex-row gap-4 justify-center mt-8">
-            <button className="px-8 py-3 rounded-md bg-black text-white font-medium hover:bg-black/90 transition-all">
+            <Button className="px-8 py-3 rounded-md bg-black text-white font-medium hover:bg-black/90 transition-all">
               Get Started
-            </button>
-            <button className="px-8 py-3 rounded-md border border-gray-300 font-medium hover:bg-gray-100 transition-all">
+            </Button>
+            <Button variant="outline" className="px-8 py-3 rounded-md border border-gray-300 font-medium hover:bg-gray-100 transition-all">
               Learn More
-            </button>
+            </Button>
           </div>
         </div>
       </div>
