@@ -19,7 +19,7 @@ export function PaymentView({
                         Select a payment option that works best for you
                     </p>
                 </div>
-
+{/* 
                 <Tabs defaultValue="subscription" className="w-full">
                     <TabsList className="grid w-full grid-cols-2 mb-8">
                         <TabsTrigger value="subscription">Subscription Plans</TabsTrigger>
@@ -32,12 +32,12 @@ export function PaymentView({
                         />
                     </TabsContent>
                     <TabsContent value="single">
+                    </TabsContent>
+                </Tabs> */}
                         <SinglePayment
                             onPaymentSuccess={onPaymentSuccess}
                             onPaymentFailure={onPaymentFailure}
                         />
-                    </TabsContent>
-                </Tabs>
             </div>
         </div>
     )

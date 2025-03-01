@@ -21,7 +21,7 @@ export function DoctorDashboardView() {
 
   if (appointmentsLoading || summariesLoading) {
     return (
-      <div className="p-6 bg-blue-50 min-h-screen">
+      <div className="p-6 bg-white min-h-screen">
         <Skeleton className="h-8 w-48 mb-6 bg-blue-200" />
         <div className="space-y-4">
           {[...Array(3)].map((_, i) => (
@@ -33,7 +33,7 @@ export function DoctorDashboardView() {
   }
 
   return (
-    <div className="p-6 bg-blue-50 min-h-screen">
+    <div className="p-6 bg-white min-h-screen">
       <motion.h1
         initial={{ opacity: 0, y: -20 }}
         animate={{ opacity: 1, y: 0 }}
@@ -67,12 +67,21 @@ export function DoctorDashboardView() {
                   </CardTitle>
                 </CardHeader>
                 <CardContent className="text-blue-800">
-                  <p><strong>Date:</strong> {appointment.date.toLocaleString()}</p>
-                  <p><strong>Severity:</strong> {appointment.severity}</p>
-                  <p><strong>AI Summary:</strong> {appointment.aiSummary}</p>
+                  <p>
+                    <strong>Date:</strong> {appointment.date.toLocaleString()}
+                  </p>
+                  <p>
+                    <strong>Severity:</strong> {appointment.severity}
+                  </p>
+                  <p>
+                    <strong>AI Summary:</strong> {appointment.aiSummary}
+                  </p>
                 </CardContent>
                 <CardFooter>
-                  <Button variant="outline" className="text-blue-500 border-blue-500">
+                  <Button
+                    variant="outline"
+                    className="text-blue-500 border-blue-500"
+                  >
                     View Details <ArrowRight className="ml-2 h-4 w-4" />
                   </Button>
                 </CardFooter>
@@ -105,13 +114,25 @@ export function DoctorDashboardView() {
                   </CardTitle>
                 </CardHeader>
                 <CardContent className="text-blue-800">
-                  <p><strong>Symptoms:</strong> {summary.symptoms}</p>
-                  <p><strong>Severity Score:</strong> {summary.severityScore}</p>
-                  <p><strong>Disease Summary:</strong> {summary.diseaseSummary}</p>
-                  <p><strong>Suggested Medications:</strong> {summary.suggestedMedications}</p>
+                  <p>
+                    <strong>Symptoms:</strong> {summary.symptoms}
+                  </p>
+                  <p>
+                    <strong>Severity Score:</strong> {summary.severityScore}
+                  </p>
+                  <p>
+                    <strong>Disease Summary:</strong> {summary.diseaseSummary}
+                  </p>
+                  <p>
+                    <strong>Suggested Medications:</strong>{" "}
+                    {summary.suggestedMedications}
+                  </p>
                 </CardContent>
                 <CardFooter>
-                  <Button variant="outline" className="text-blue-500 border-blue-500">
+                  <Button
+                    variant="outline"
+                    className="text-blue-500 border-blue-500"
+                  >
                     View Details <ArrowRight className="ml-2 h-4 w-4" />
                   </Button>
                 </CardFooter>

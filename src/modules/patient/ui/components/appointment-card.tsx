@@ -11,7 +11,7 @@ import { BookAppointmentSheet } from "./book-appointment-sheet"
 interface AppointmentCardProps {
   title: string
   dateTime: string
-  status: "completed" | "scheduled" | "rescheduled" | "canceled"
+  status: "completed" | "scheduled" | "rescheduled" | "canceled" | "in-progress"
   timeRemaining?: string
 }
 

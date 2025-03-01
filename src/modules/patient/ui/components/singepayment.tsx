@@ -114,8 +114,8 @@ export function SinglePayment({
     >
       <Card className="max-w-md mx-auto">
         <CardHeader>
-          <CardTitle>Single Appointment Payment</CardTitle>
-          <CardDescription>Make a one-time payment to book an appointment</CardDescription>
+          {/* <CardTitle>Single Appointment Payment</CardTitle> */}
+          <CardDescription className="text-center">Make a one-time payment to book an appointment</CardDescription>
         </CardHeader>
         <CardContent>
           <div className="text-center">

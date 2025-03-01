@@ -50,6 +50,7 @@ export const paymentRouter = createTRPCRouter({
       z.object({
         amount: z.number(),
         notes: z.string().optional(),
+        paymentMethod: z.string().optional(),
       }),
     )
     .mutation(async ({ ctx, input }) => {
@@ -89,7 +90,7 @@ export const paymentRouter = createTRPCRouter({
         .values({
           patientId: userId,
           amount: input.amount * 100, // Store in paise
-          paymentMethod: "razorpay",
+          paymentMethod: razorpayResponse.order.method ?? input.paymentMethod ?? "razorpay",
           paymentType: "single",
           status: "pending",
           razorpayOrderId: razorpayResponse.order.id,

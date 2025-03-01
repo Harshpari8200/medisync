@@ -23,7 +23,7 @@ export function Sidebar({ className }: SidebarProps) {
     { name: "Chat", href: "/dashboard/doctor/chat", icon: Users },
     { name: "Appointments", href: "/dashboard/doctor/appointments", icon: Calendar },
     { name: "Medical Records", href: "/dashboard/doctor/records", icon: ClipboardList },
-    { name: "Payments", href: "/dashboard/payments", icon: CreditCard },
+    { name: "Payments", href: "/dashboard/doctor/payments", icon: CreditCard },
     { name: "Settings", href: "/dashboard/settings", icon: Settings },
   ]
   // my url looks like this dashboard/patient/appointments

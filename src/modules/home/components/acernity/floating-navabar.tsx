@@ -4,7 +4,7 @@ import { useState, useEffect } from "react";
 import Link from "next/link";
 import { motion, AnimatePresence } from "framer-motion";
 import { Menu } from "lucide-react";
-import { SignedIn, SignedOut } from "@clerk/nextjs";
+import { SignedIn, SignedOut, SignOutButton } from "@clerk/nextjs";
 import { Button } from "@/components/ui/button";
 
 const Logo = () => (
@@ -170,6 +170,14 @@ export default function Navbar() {
               >
                 Go to Dashboard
               </Link>
+              <SignOutButton>
+                <Button
+                  className="px-5 py-2 text-sm font-bold relative cursor-pointer hover:-translate-y-0.5 transition duration-200 inline-flex items-center justify-center text-black bg-white rounded-[6px] border border-[#E5E5E5] shadow-md"
+                  variant="outline"
+                >
+                  Sign Out
+                </Button>
+              </SignOutButton>
             </SignedIn>
             <SignedOut>
               <Link
@@ -247,6 +255,14 @@ export default function Navbar() {
                   >
                     Go to Dashboard
                   </Link>
+                  <SignOutButton>
+                    <Button
+                      className="px-5 py-2 text-sm font-bold relative cursor-pointer hover:-translate-y-0.5 transition duration-200 inline-flex items-center justify-center text-black bg-white rounded-[6px] border border-[#E5E5E5] shadow-md"
+                      variant="outline"
+                    >
+                      Sign Out
+                    </Button>
+                  </SignOutButton>
                 </SignedIn>
                 <SignedOut>
                   <Link

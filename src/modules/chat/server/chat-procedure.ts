@@ -16,7 +16,7 @@ export const chatRouter = createTRPCRouter({
         const doctor = alias(users, "doctor");
         const patient = alias(users, "patient");
 
-        // Fetch the current doctor's details
+        // Fetch the current user's details
         const [user] = await db
           .select()
           .from(users)
@@ -24,33 +24,61 @@ export const chatRouter = createTRPCRouter({
           .limit(1);
 
         if (!user) {
-          throw new Error("User not found or access denied: [Chat Rooms]" + input.userId);
+          throw new Error(
+            "User not found or access denied: [Chat Rooms]" + input.userId
+          );
         }
 
-        const doctorId = user.id;
-
-        // Fetch chat rooms with associated doctor and patient details
-        const rooms = await db
-          .select({
-            room: chatRooms,
-            doctor: {
-              id: doctor.id,
-              firstName: doctor.firstName,
-              lastName: doctor.lastName,
-              imageUrl: doctor.imageUrl,
-            },
-            patient: {
-              id: patient.id,
-              firstName: patient.firstName,
-              lastName: patient.lastName,
-              imageUrl: patient.imageUrl,
-            },
-          })
-          .from(chatRooms)
-          .leftJoin(doctor, eq(chatRooms.doctorId, doctor.id)) // Join with doctor alias
-          .leftJoin(patient, eq(chatRooms.patientId, patient.id)) // Join with patient alias
-          .where(eq(chatRooms.doctorId, doctorId)) // Filter by doctor ID
-          .orderBy(desc(chatRooms.createdAt)); // Order by creation date
+        let rooms;
+        if (user.role === "doctor") {
+          // Fetch chat rooms for the doctor
+          rooms = await db
+            .select({
+              room: chatRooms,
+              doctor: {
+                id: doctor.id,
+                firstName: doctor.firstName,
+                lastName: doctor.lastName,
+                imageUrl: doctor.imageUrl,
+              },
+              patient: {
+                id: patient.id,
+                firstName: patient.firstName,
+                lastName: patient.lastName,
+                imageUrl: patient.imageUrl,
+              },
+            })
+            .from(chatRooms)
+            .leftJoin(doctor, eq(chatRooms.doctorId, doctor.id))
+            .leftJoin(patient, eq(chatRooms.patientId, patient.id))
+            .where(eq(chatRooms.doctorId, user.id))
+            .orderBy(desc(chatRooms.createdAt));
+        } else if (user.role === "patient") {
+          // Fetch chat rooms for the patient
+          rooms = await db
+            .select({
+              room: chatRooms,
+              doctor: {
+                id: doctor.id,
+                firstName: doctor.firstName,
+                lastName: doctor.lastName,
+                imageUrl: doctor.imageUrl,
+              },
+              patient: {
+                id: patient.id,
+                firstName: patient.firstName,
+                lastName: patient.lastName,
+                imageUrl: patient.imageUrl,
+              },
+            })
+            .from(chatRooms)
+            .leftJoin(doctor, eq(chatRooms.doctorId, doctor.id))
+            .leftJoin(patient, eq(chatRooms.patientId, patient.id))
+            .where(eq(chatRooms.patientId, user.id))
+            .orderBy(desc(chatRooms.createdAt));
+        } else {
+          throw new Error("User role not supported for chat rooms");
+        }
 
         // Transform the result to match the expected format
         return rooms.map(({ room, doctor, patient }) => ({
@@ -93,7 +121,9 @@ export const chatRouter = createTRPCRouter({
 
   // Update user presence status
   updateUserPresence: protectedProcedure
-    .input(z.object({ userId: z.string(), status: z.enum(["online", "offline"]) }))
+    .input(
+      z.object({ userId: z.string(), status: z.enum(["online", "offline"]) })
+    )
     .mutation(async ({ input }) => {
       await pusher.trigger(`presence-${input.userId}`, "user-status", {
         userId: input.userId,
@@ -121,7 +151,9 @@ export const chatRouter = createTRPCRouter({
         .limit(1);
 
       if (!user.length) {
-        throw new Error("User not found or access denied: [Send Message]" + input.senderId);
+        throw new Error(
+          "User not found or access denied: [Send Message]" + input.senderId
+        );
       }
 
       const userId = user[0].id;
@@ -134,9 +166,13 @@ export const chatRouter = createTRPCRouter({
             and(
               eq(chatRooms.id, input.chatRoomId),
               // Ensure the user is either the patient or doctor
-              or(eq(chatRooms.patientId, userId), eq(chatRooms.doctorId, userId))
-          ))
-          .limit(1)
+              or(
+                eq(chatRooms.patientId, userId),
+                eq(chatRooms.doctorId, userId)
+              )
+            )
+          )
+          .limit(1);
 
         if (!chatRoom.length) {
           throw new Error("Chat room not found or access denied");
